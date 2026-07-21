@@ -1,7 +1,14 @@
 #!/bin/bash
 set -e
 
-# Stop the running container (if any)
 echo "Hi"
-containerid=$(docker ps | awk '{print $1}')
-docker rm -f $containerid
+
+# Get ONLY container IDs without header rows (-q)
+containerid=$(docker ps -q)
+
+# Only run docker rm if there is actually a container running
+if [ -n "$containerid" ]; then
+    docker rm -f $containerid
+else
+    echo "No running containers found."
+fi
